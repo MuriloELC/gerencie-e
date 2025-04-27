@@ -18,6 +18,7 @@ public class Empresa {
 	private String contato02;
 	private String email;
 	private String emailFinanceiro;
+	private Integer ativo; // 0 = INATIVO, 1 = ATIVO
 	
 	public Empresa() {
 		this.id = UUID.randomUUID().toString();
@@ -25,6 +26,10 @@ public class Empresa {
 
 	public String getId() {
 		return id;
+	}
+	
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getNomeRazao() {
@@ -130,12 +135,21 @@ public class Empresa {
 	public void setEmailFinanceiro(String emailFinanceiro) {
 		this.emailFinanceiro = emailFinanceiro;
 	}
+	
+    public Integer getAtivo() {
+        return ativo;
+    }
 
-	@Override
-	public String toString() {
-		return "Empresa [id=" + id + ", nomeRazao=" + nomeRazao + ", apelidoFantasia=" + apelidoFantasia + ", cpfCnpj="
-				+ cpfCnpj + ", bairro=" + bairro + ", cep=" + cep + ", cidade=" + cidade + ", pais=" + pais
-				+ ", estado=" + estado + ", logradouro=" + logradouro + ", contato01=" + contato01 + ", contato02="
-				+ contato02 + ", email=" + email + ", emailFinanceiro=" + emailFinanceiro + "]";
-	}
+    public void setAtivo(Integer ativo) {
+        this.ativo = ativo;
+    }
+
+    @Override
+    public String toString() {
+        return "Empresa [id=" + id + ", nomeRazao=" + nomeRazao + ", apelidoFantasia=" + apelidoFantasia 
+                + ", cpfCnpj=" + cpfCnpj + ", bairro=" + bairro + ", cep=" + cep + ", cidade=" + cidade 
+                + ", pais=" + pais + ", estado=" + estado + ", logradouro=" + logradouro 
+                + ", contato01=" + contato01 + ", contato02=" + contato02 + ", email=" + email 
+                + ", emailFinanceiro=" + emailFinanceiro + ", ativo=" + ativo + "]";
+    }
 }

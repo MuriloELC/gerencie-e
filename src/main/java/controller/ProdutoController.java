@@ -1,4 +1,4 @@
-package servlet;
+package controller;
 
 public class ProdutoController {
 
