@@ -26,12 +26,12 @@ public class UsuarioController {
     }
 
     public void cadastrar(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String nome = request.getParameter("nome");
+     //   String nome = request.getParameter("nome");
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
 
         Usuario usuario = new Usuario();
-        usuario.setNome(nome);
+     //   usuario.setNome(nome);
         usuario.setEmail(email);
         usuario.setSenha(senha);
 
@@ -52,27 +52,29 @@ public class UsuarioController {
         out.println("<a href='AppServlet?acao=usuario-cadastrar-form'>Novo Usuário</a><br><br>");
         out.println("<ul>");
         for (Usuario u : usuarios) {
-            out.println("<li>" + u.getNome() + " - " + u.getEmail() + "</li>");
+    //        out.println("<li>" + u.getNome() + " - " + u.getEmail() + "</li>");
         }
         out.println("</ul>");
         out.println("</body></html>");
     }
 
     public void excluir(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        usuarioDAO.excluir(id);
+    	UsuarioDAO usuarioDAO = new UsuarioDAO();
+        String id = (request.getParameter("id"));
+        usuarioDAO.inativar(id);
         response.sendRedirect("AppServlet?acao=usuario-listar");
     }
 
     public void atualizar(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
+    	UsuarioDAO usuarioDAO = new UsuarioDAO();
+        String id = (request.getParameter("id"));
         String nome = request.getParameter("nome");
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
 
         Usuario usuario = new Usuario();
         usuario.setId(id);
-        usuario.setNome(nome);
+  //      usuario.setNome(nome);
         usuario.setEmail(email);
         usuario.setSenha(senha);
 
@@ -81,15 +83,16 @@ public class UsuarioController {
     }
 
     public void buscarPorId(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        Usuario usuario = usuarioDAO.buscarPorId(id);
+    	UsuarioDAO usuarioDAO = new UsuarioDAO();
+        String id = (request.getParameter("id"));
+        Usuario usuario = usuarioDAO.listarPorId(id);
 
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         out.println("<html><head><title>Detalhes do Usuário</title></head><body>");
         if (usuario != null) {
             out.println("<h1>Detalhes do Usuário</h1>");
-            out.println("<p>Nome: " + usuario.getNome() + "</p>");
+    //        out.println("<p>Nome: " + usuario.getNome() + "</p>");
             out.println("<p>Email: " + usuario.getEmail() + "</p>");
         } else {
             out.println("<p>Usuário não encontrado!</p>");

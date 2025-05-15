@@ -14,6 +14,10 @@ public class UsuarioDAO {
     public UsuarioDAO(Connection conn) {
         this.conn = conn;
     }
+    
+    public UsuarioDAO() {
+    	
+    };
 
     public void cadastrar(Usuario usuario) {
         String sql = "INSERT INTO usuario (id, email, senha, id_empresa, ativo) VALUES (?, ?, ?, ?, ?)";
