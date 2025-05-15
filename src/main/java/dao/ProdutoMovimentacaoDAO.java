@@ -125,4 +125,18 @@ public class ProdutoMovimentacaoDAO {
             System.out.println("Erro ao inativar movimentação: " + e.getMessage());
         }
     }
+    
+    public void ativar(String id) {
+    	String sql = "UPDATE produtomovimentacao SET ativo = 1 WHERE id = ?";
+    	
+    	try {
+    		PreparedStatement ps = conn.prepareStatement(sql);
+    		ps.setString(1, id);
+    		ps.executeUpdate();
+    		
+    		System.out.println("Movimentação ativada com sucesso!");
+    	} catch (Exception e) {
+    		System.out.println("Erro ao ativar movimentação: " + e.getMessage());
+    	}
+    }
 }

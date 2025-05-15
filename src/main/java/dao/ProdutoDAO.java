@@ -127,4 +127,18 @@ public class ProdutoDAO {
             System.out.println("Erro ao inativar produto: " + e.getMessage());
         }
     }
+    
+    public void ativar(String id) {
+    	String sql = "UPDATE produto SET ativo = 1 WHERE id = ?";
+    	
+    	try {
+    		PreparedStatement ps = conn.prepareStatement(sql);
+    		ps.setString(1, id);
+    		ps.executeUpdate();
+    		
+    		System.out.println("Produto ativado com sucesso!");
+    	} catch (Exception e) {
+    		System.out.println("Erro ao ativar produto: " + e.getMessage());
+    	}
+    }
 }

@@ -161,4 +161,18 @@ public class EmpresaDAO {
             System.out.println("Erro ao inativar empresa: " + e.getMessage());
         }
     }
+    
+    public void ativar(String id) {
+    	String sql = "UPDATE empresa SET ativo = 1 WHERE id = ?";
+    	
+    	try {
+    		PreparedStatement ps = conn.prepareStatement(sql);
+    		ps.setString(1, id);
+    		ps.executeUpdate();
+    		
+    		System.out.println("Empresa ativada com sucesso!");
+    	} catch (Exception e) {
+    		System.out.println("Erro ao ativar empresa: " + e.getMessage());
+    	}
+    }
 }

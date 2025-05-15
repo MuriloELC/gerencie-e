@@ -113,4 +113,18 @@ public class UsuarioDAO {
             System.out.println("Erro ao inativar usuário: " + e.getMessage());
         }
     }
+    
+    public void ativar(String id) {
+        String sql = "UPDATE usuario SET ativo = 1 WHERE id = ?";
+
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, id);
+            ps.executeUpdate();
+
+            System.out.println("Usuário ativado com sucesso!");
+        } catch (Exception e) {
+            System.out.println("Erro ao ativar usuário: " + e.getMessage());
+        }
+    }
 }
