@@ -2,11 +2,14 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection; //Porque
 import java.util.List;
 
-import dao.UsuarioDAO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import connection.DatabaseConnection;
+import dao.UsuarioDAO;
 import model.Usuario;
 
 public class UsuarioController {
@@ -15,47 +18,55 @@ public class UsuarioController {
     	PrintWriter out = response.getWriter();
         out.println("<html><head><title>Cadastro de Usuário</title></head><body>");
         out.println("<h1>Cadastro de Usuário</h1>");
-        out.println("<form method='post' action='AppServlet?acao=usuario-cadastrar'>");
-        out.println("Nome: <input type='text' name='nome'><br><br>");
-        out.println("Email: <input type='email' name='email'><br><br>");
-        out.println("Senha: <input type='password' name='senha'><br><br>");
+        out.println("<form method='post' action='?action=cadastrarUsuario'>");
+        out.println("Email: <input type='email' name='email' required><br><br>");
+        out.println("Senha: <input type='password' name='senha' required><br><br>");
         out.println("<input type='submit' value='Cadastrar'>");
         out.println("</form>");
         out.println("<br><a href='?action=usuario-listar'>Voltar à Lista</a>");
         out.println("</body></html>");
     }
 
-    public void cadastrar(HttpServletRequest request, HttpServletResponse response) throws IOException {
-     //   String nome = request.getParameter("nome");
+    public void cadastrarUsuario(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
 
         Usuario usuario = new Usuario();
-     //   usuario.setNome(nome);
         usuario.setEmail(email);
         usuario.setSenha(senha);
+        usuario.setIdEmpresa("dc8cfc0c-34ab-475b-bf56-9b1cc7f4b87b"); // ID fixo ou dinâmico depois
 
-        UsuarioDAO usuarioDAO = new UsuarioDAO();
-        usuarioDAO.cadastrar(usuario);
-        
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            UsuarioDAO usuarioDAO = new UsuarioDAO(conn);
+            usuarioDAO.cadastrar(usuario);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         response.sendRedirect("?action=usuario-listar");
     }
 
     public void listar(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    	UsuarioDAO usuarioDAO = new UsuarioDAO();
-    	List<Usuario> usuarios = usuarioDAO.listar();
-        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            UsuarioDAO usuarioDAO = new UsuarioDAO(conn);
+            List<Usuario> usuarios = usuarioDAO.listar();
 
-        out.println("<html><head><title>Lista de Usuários</title></head><body>");
-        out.println("<h1>Lista de Usuários</h1>");
-        out.println("<a href='AppServlet?acao=usuario-cadastrar-form'>Novo Usuário</a><br><br>");
-        out.println("<ul>");
-        for (Usuario u : usuarios) {
-    //        out.println("<li>" + u.getNome() + " - " + u.getEmail() + "</li>");
+            response.setContentType("text/html");
+            PrintWriter out = response.getWriter();
+
+            out.println("<html><head><title>Lista de Usuários</title></head><body>");
+            out.println("<h1>Lista de Usuários</h1>");
+            out.println("<a href='?action=cadastrarUsuarioForm'>Novo Usuário</a><br><br>");
+            out.println("<ul>");
+            for (Usuario u : usuarios) {
+                out.println("<li>" + u.getEmail() + "</li>");
+            }
+            out.println("</ul>");
+            out.println("</body></html>");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        out.println("</ul>");
-        out.println("</body></html>");
+
     }
 
     public void excluir(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -68,13 +79,11 @@ public class UsuarioController {
     public void atualizar(HttpServletRequest request, HttpServletResponse response) throws IOException {
     	UsuarioDAO usuarioDAO = new UsuarioDAO();
         String id = (request.getParameter("id"));
-        String nome = request.getParameter("nome");
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
 
         Usuario usuario = new Usuario();
         usuario.setId(id);
-  //      usuario.setNome(nome);
         usuario.setEmail(email);
         usuario.setSenha(senha);
 
@@ -92,7 +101,6 @@ public class UsuarioController {
         out.println("<html><head><title>Detalhes do Usuário</title></head><body>");
         if (usuario != null) {
             out.println("<h1>Detalhes do Usuário</h1>");
-    //        out.println("<p>Nome: " + usuario.getNome() + "</p>");
             out.println("<p>Email: " + usuario.getEmail() + "</p>");
         } else {
             out.println("<p>Usuário não encontrado!</p>");
