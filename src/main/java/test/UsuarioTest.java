@@ -12,6 +12,7 @@ public class UsuarioTest {
 
 		String ID = "dc8cfc0c-34ab-475b-bf56-9b1cc7f4b587";
 		Usuario usuario = new Usuario();
+		usuario.setId(ID);
 		usuario.setEmail("usuario@empresa.com");
 		usuario.setSenha("123456");
 		usuario.setIdEmpresa("dc8cfc0c-34ab-475b-bf56-9b1cc7f4b87b");

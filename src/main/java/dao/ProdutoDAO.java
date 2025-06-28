@@ -113,6 +113,36 @@ public class ProdutoDAO {
         }
         return produto;
     }
+    
+    public List<Produto> listarPorEmpresa(String idEmpresa) {
+        List<Produto> lista = new ArrayList<>();
+        String sql = "SELECT * FROM produto WHERE ativo = 1 AND id_empresa = ?";
+
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, idEmpresa);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Produto produto = new Produto();
+                produto.setId(rs.getString("id"));
+                produto.setDescricao(rs.getString("descricao"));
+                produto.setQuantidade(rs.getInt("quantidade"));
+                produto.setValorCusto(rs.getDouble("valorcusto"));
+                produto.setValorVenda(rs.getDouble("valorvenda"));
+                produto.setIdEmpresa(rs.getString("id_empresa"));
+                produto.setQuantidadeEstoque(rs.getInt("quantidade_estoque"));
+                produto.setAtivo(rs.getInt("ativo"));
+
+                lista.add(produto);
+            }
+        } catch (Exception e) {
+            System.out.println("Erro ao listar produtos da empresa: " + e.getMessage());
+        }
+
+        return lista;
+    }
+
 
     public void inativar(String id) {
         String sql = "UPDATE produto SET ativo = 0 WHERE id = ?";

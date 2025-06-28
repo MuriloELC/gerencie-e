@@ -12,6 +12,7 @@ public class ProdutoTest {
 
 		String ID = "e49eb22b-60d5-44c7-a19e-3d5f56480d9c";
 		Produto produto = new Produto();
+		produto.setId(ID);
 		produto.setDescricao("Monitor 66'' Full HD");
 		produto.setQuantidade(10);
 		produto.setValorCusto(600.00);

@@ -12,6 +12,7 @@ public class EmpresaTest {
 		
 		String ID = "dc8cfc0c-34ab-475b-bf56-9b1cc7f4b87b";
 		Empresa empresa = new Empresa();
+		empresa.setId(ID);
 		empresa.setNomeRazao("Arroz 3");
 		empresa.setApelidoFantasia("Batata");
 		empresa.setCpfCnpj("75.923.047/0001-26");
