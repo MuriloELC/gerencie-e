@@ -10,12 +10,20 @@ public class DatabaseConnection {
 	private static final String PROPERTIES_FILE = "/env.properties";
 
 	public static Connection getConnection() {
+		
+		try {
+		    Class.forName("com.mysql.cj.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+		    throw new RuntimeException("Driver MySQL não encontrado no classpath!", e);
+		}
+
+		
 		try {
 			InputStream input = DatabaseConnection.class.getResourceAsStream(PROPERTIES_FILE);
-
+			
 			if (input == null) {
-				System.out.println("Arquivo de configuração não encontrado: " + PROPERTIES_FILE);
-				return null;
+			    System.out.println("Arquivo env.properties NÃO encontrado no classpath!");
+			    return null;
 			}
 
 			Properties props = new Properties();
